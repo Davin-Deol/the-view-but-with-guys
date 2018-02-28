@@ -14,4 +14,4 @@
       </tr>
   </table>
 <input type='submit' value='Complete checked tasks'/>
-</form>
+</form><!--change -->
