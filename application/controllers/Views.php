@@ -29,24 +29,25 @@ class Views extends Application
             	$undone[] = $task;
     	}
     	// order them by priority
-		usort($undone, "orderByPriority");
+  		//usort($undone, array($this, "orderByPriority"));
+      usort($undone, "orderByPriority");
 
-		// substitute the priority name
-		foreach ($undone as $task)
-    		$task->priority = $this->app->priority($task->priority);
+  		// substitute the priority name
+  		foreach ($undone as $task)
+      		$task->priority = $this->app->priority($task->priority);
 
-    	// convert the array of task objects into an array of associative objects
-		foreach ($undone as $task)
-    		$converted[] = (array) $task;
+      	// convert the array of task objects into an array of associative objects
+  		foreach ($undone as $task)
+      		$converted[] = (array) $task;
 
-		$parms2 = ['display_tasks' => $converted];
-    //return $this->parser->parse('by_priority',$parms2,true);
+  		$parms2 = ['display_tasks' => $converted];
+      return $this->parser->parse('by_priority',$parms2,true);
 
-      // INSERT the next two lines
-    $role = $this->session->userdata('userrole');
-    $parms['completer'] = ($role == ROLE_OWNER) ? '/views/complete' : '#';
-    return $this->parser->parse('by_priority', $parms, true);
-	}
+        // INSERT the next two lines
+      $role = $this->session->userdata('userrole');
+      $parms['completer'] = ($role == ROLE_OWNER) ? '/views/complete' : '#';
+      return $this->parser->parse('by_priority', $parms, true);
+  	}
   // complete flagged items
   function complete() {
       $role = $this->session->userdata('userrole');
@@ -63,15 +64,17 @@ class Views extends Application
       }
       $this->index();
   }
-
   // return -1, 0, or 1 of $a's priority is higher, equal to, or lower than $b's
-	function orderByPriority($a, $b)
-	{
-    	if ($a->priority > $b->priority)
-        	return -1;
-    	else if ($a->priority < $b->priority)
-        	return 1;
-    	else
-        	return 0;
-	}
+
+
+}
+
+function orderByPriority($a, $b)
+{
+    if ($a->priority > $b->priority)
+        return -1;
+    else if ($a->priority < $b->priority)
+        return 1;
+    else
+        return 0;
 }

@@ -1,6 +1,7 @@
 <?php
 
 class Tasks extends CSV_Model {
+    private $test;
 public function __construct()
   {
     parent::__construct(PATHOFTASKS, 'id');
@@ -21,12 +22,24 @@ public function __construct()
     // order them by category
     usort($undone, "orderByCategory");
 
-    // convert the array of task objects into an array of associative objects       
+    // convert the array of task objects into an array of associative objects
     foreach ($undone as $task)
         $converted[] = (array) $task;
 
 	return $converted;
 	}
+
+  // provide form validation rules
+  public function rules()
+  {
+      $config = array(
+          ['field' => 'task', 'label' => 'TODO task', 'rules' => 'alpha_numeric_spaces|max_length[64]'],
+          ['field' => 'priority', 'label' => 'Priority', 'rules' => 'integer|less_than[4]'],
+          ['field' => 'size', 'label' => 'Task size', 'rules' => 'integer|less_than[4]'],
+          ['field' => 'group', 'label' => 'Task group', 'rules' => 'integer|less_than[5]'],
+      );
+      return $config;
+  }
 }
 // return -1, 0, or 1 of $a's category name is earlier, equal to, or later than $b's
 function orderByCategory($a, $b)
@@ -37,4 +50,12 @@ function orderByCategory($a, $b)
         return 1;
     else
         return 0;
+}
+
+function __set($test, $value) {
+    if ($value == 'x') {
+        $this->test = "$value: reject";
+    } else {
+        $this->test = $value;
+    }
 }
