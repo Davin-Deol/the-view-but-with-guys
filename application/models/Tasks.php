@@ -1,6 +1,7 @@
 <?php
 
 class Tasks extends CSV_Model {
+    private $test;
 public function __construct()
   {
     parent::__construct(PATHOFTASKS, 'id');
@@ -49,4 +50,12 @@ function orderByCategory($a, $b)
         return 1;
     else
         return 0;
+}
+
+function __set($test, $value) {
+    if ($value == 'x') {
+        $this->test = "$value: reject";
+    } else {
+        $this->test = $value;
+    }
 }
